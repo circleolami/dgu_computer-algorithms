@@ -1,4 +1,4 @@
-# dgu_computer_algorithms
+# dgu_computer-algorithms
 
 ## Intro
 
