@@ -11,5 +11,5 @@
 
 ## Lectures
 
-Lec1) Queue, Stack, Graph and Big-O notation
-Lec2) Sort (selection, bubble, insertion, shell, quick)
+- Lec1) Queue, Stack, Graph and Big-O notation
+- Lec2) Sort (selection, bubble, insertion, shell, quick)
