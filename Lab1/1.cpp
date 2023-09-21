@@ -1,7 +1,3 @@
-/* 1.cpp
-다양한 입력 값들을 사용하여 다음 프로그램을 실행해보고, 프로그램의 동작원리를 설명하시오.
-*/
-
 #include <iostream>
 
 using namespace std;
