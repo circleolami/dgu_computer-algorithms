@@ -8,14 +8,14 @@ using namespace std;
 typedef int itemType;
 
 void print_array(vector<itemType> &a, int n);
-void shellSort(vector<itemType> &a);
-long long compare, datamove;
+void shellSort(vector<itemType> &a, long long *compare, long long *datamove);
+long long compareA, datamoveA;
+long long compareB, datamoveB;
 
 int main()
 {
     int N;
 
-    cout << "Enter the size N of the array (>10000): ";
     cin >> N;
 
     vector<itemType> A(N), B(N);
@@ -36,38 +36,37 @@ int main()
     for (int i = 0; i < N; i++)
         B[i] = a[i].second;
 
-    shellSort(A);
+    shellSort(A, &compareA, &datamoveA);
+    shellSort(B, &compareB, &datamoveB);
+
     cout << "Sorted_Data_A: ";
     print_array(A, N);
-    cout << "Compare_Cnt_A: " << compare << endl;
-    cout << "DataMove_Cnt_A: " << datamove << endl
-         << endl;
-
-    shellSort(B);
     cout << "Sorted_Data_B: ";
     print_array(B, N);
-    cout << "Compare_Cnt_B: " << compare << endl;
-    cout << "DataMove_Cnt_B: " << datamove << endl;
+    cout << "Compare_Cnt_A: " << compareA << ", ";
+    cout << "DataMove_Cnt_A: " << datamoveA << endl;
+    cout << "Compare_Cnt_B: " << compareB << ", ";
+    cout << "DataMove_Cnt_B: " << datamoveB << endl;
 
     return 0;
 }
 
 void print_array(vector<itemType> &a, int n)
 {
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < n && i < 20; i++)
         cout << a[i] << " ";
     cout << endl;
 }
 
-void shellSort(vector<itemType> &a)
+void shellSort(vector<itemType> &a, long long *compare, long long *datamove)
 {
     int n = a.size();
     int i, j, h = 1;
     itemType v;
 
     h = 1;
-    compare = 0;
-    datamove = 0;
+    *compare = 0;
+    *datamove = 0;
     while (h < n / 3)
     {
         h = 3 * h + 1;
@@ -81,17 +80,18 @@ void shellSort(vector<itemType> &a)
             j = i;
             while (1)
             {
-                compare++;
+
+                (*compare)++;
                 if (j >= h && a[j - h] > v)
                 {
-                    datamove++;
+                    (*datamove)++;
                     a[j] = a[j - h];
                     j -= h;
                 }
                 else
                     break;
             }
-            datamove++;
+            (*datamove)++;
             a[j] = v;
         }
         h = h / 3;
