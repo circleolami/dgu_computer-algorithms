@@ -67,10 +67,10 @@ void print_array(vector<itemType> &a, int n)
 
 int Bubble(int sorted, itemType *a, long long *compare, long long *datamove)
 {
-    (*compare)++;
     if (a[0] > a[1])
     {
-        (*datamove)++;
+        (*compare)++;
+        (*datamove) += 3;
         swap(a[0], a[1]);
         sorted = 0;
     }
