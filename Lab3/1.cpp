@@ -2,20 +2,22 @@
 #include <vector>
 #include <ctime>
 #include <algorithm>
+#include <stack>
 
 using namespace std;
 
 typedef int itemType;
+
 void print_array(vector<itemType> &a, int n);
 void swap(vector<itemType> &a, int i, int j, long long *datamove);
 int partition(vector<itemType> &a, int left, int right, long long *compare, long long *datamove);
-void quicksort(vector<itemType> &a, int left, int right, long long *compare, long long *datamove);
+void iterativeQuicksort(vector<itemType> &a, int left, int right, long long *compare, long long *datamove);
+
 long long compareA, datamoveA, compareB, datamoveB;
 
 int main()
 {
     int N;
-
     cin >> N;
 
     vector<itemType> A(N), B(N);
@@ -32,12 +34,11 @@ int main()
     }
 
     sort(a.begin(), a.end());
-
     for (int i = 0; i < N; i++)
         B[i] = a[i].second;
 
-    quicksort(A, 0, N - 1, &compareA, &datamoveA);
-    quicksort(B, 0, N - 1, &compareB, &datamoveB);
+    iterativeQuicksort(A, 0, N - 1, &compareA, &datamoveA);
+    iterativeQuicksort(B, 0, N - 1, &compareB, &datamoveB);
 
     cout << "SortedData_A: ";
     print_array(A, N);
@@ -73,32 +74,50 @@ int partition(vector<itemType> &a, int left, int right, long long *compare, long
 
     if (right > left)
     {
-        v = a[left];
-        i = left;
-        j = right + 1;
-        while (1)
+        v = a[right];
+        i = left - 1;
+        j = right;
+
+        while (true)
         {
-            while (a[++i] < v)
+            while (a[++i] < v && i < right)
                 (*compare)++;
-            while (a[--j] > v)
+            while (a[--j] > v && j > left)
                 (*compare)++;
             if (i >= j)
                 break;
             swap(a, i, j, datamove);
         }
-        swap(a, j, left, datamove);
+        swap(a, i, right, datamove);
     }
-    return j;
+    return i;
 }
 
-void quicksort(vector<itemType> &a, int left, int right, long long *compare, long long *datamove)
+void iterativeQuicksort(vector<itemType> &a, int left, int right, long long *compare, long long *datamove)
 {
-    int temp;
+    stack<int> s;
+    s.push(left);
+    s.push(right);
 
-    if (right > left)
+    while (!s.empty())
     {
-        temp = partition(a, left, right, compare, datamove);
-        quicksort(a, left, temp - 1, compare, datamove);
-        quicksort(a, temp + 1, right, compare, datamove);
+        right = s.top();
+        s.pop();
+        left = s.top();
+        s.pop();
+
+        int pivot = partition(a, left, right, compare, datamove);
+
+        if (pivot - 1 > left)
+        {
+            s.push(left);
+            s.push(pivot - 1);
+        }
+
+        if (pivot + 1 < right)
+        {
+            s.push(pivot + 1);
+            s.push(right);
+        }
     }
 }
