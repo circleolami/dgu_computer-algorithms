@@ -21,7 +21,7 @@ int main()
     }
 
     map<string, int> wordCnt;
-    string line, content;
+    string content;
 
     file.seekg(0, ios::end);
     content.resize(file.tellg());
@@ -35,7 +35,7 @@ int main()
         unsigned char c = content[i];
         if (is_valid_char(c))
         {
-            word += c;
+            word += tolower(c); // Normalize the words to lowercase
         }
         else
         {
@@ -71,7 +71,7 @@ bool compare(const pair<string, int> &a, const pair<string, int> &b)
 {
     if (a.second == b.second)
     {
-        return strcmp(a.first.c_str(), b.first.c_str()) < 0;
+        return a.first < b.first; // Use the string's own comparison function
     }
     return a.second > b.second;
 }
