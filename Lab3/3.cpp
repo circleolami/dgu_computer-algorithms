@@ -35,15 +35,7 @@ int main()
         unsigned char c = content[i];
         if (is_valid_char(c))
         {
-            if (c >= 0x81 && c <= 0xFE && i + 1 < content.size())
-            {
-                word += content.substr(i, 2);
-                i += 1;
-            }
-            else
-            {
-                word += c;
-            }
+            word += c;
         }
         else
         {
