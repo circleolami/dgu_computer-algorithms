@@ -35,7 +35,7 @@ int main()
         unsigned char c = content[i];
         if (is_valid_char(c))
         {
-            word += tolower(c); // Normalize the words to lowercase
+            word += tolower(c);
         }
         else
         {
@@ -71,7 +71,7 @@ bool compare(const pair<string, int> &a, const pair<string, int> &b)
 {
     if (a.second == b.second)
     {
-        return a.first < b.first; // Use the string's own comparison function
+        return a.first < b.first;
     }
     return a.second > b.second;
 }
