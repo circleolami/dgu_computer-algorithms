@@ -3,63 +3,54 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 
 using namespace std;
 
 typedef int itemType;
 typedef struct node *node_pointer;
-typedef struct node
-{
+typedef struct node {
     itemType value;
     node_pointer next;
 } Node;
 
 node_pointer TABLE[10], x, z, temp;
 
-void print_array(const vector<itemType> &a);
 void shuffle(vector<itemType> &b);
 void generateDataA(vector<itemType> &a);
 void generateDataB(vector<itemType> &b);
 void generateDataC(vector<itemType> &c);
 void radixSort(itemType *a, int n, long long *compare, long long *datamove);
 
-long long compareA, compareB, compareC, datamoveA, datamoveB, datamoveC;
-
 int main()
 {
     srand(time(nullptr));
-    int n;
-    cin >> n;
+    ofstream outFile("results.txt");
 
-    vector<itemType> dataA(n);
-    vector<itemType> dataB(n);
-    vector<itemType> dataC(n);
-    vector<itemType> sortedDataA(dataA);
-    vector<itemType> sortedDataB(dataB);
-    vector<itemType> sortedDataC(dataC);
+    for (int n = 10; n <= 1000; n += 10) 
+    {
+        vector<itemType> dataA(n);
+        vector<itemType> dataB(n);
+        vector<itemType> dataC(n);
 
-    generateDataA(dataA);
-    generateDataB(dataB);
-    generateDataC(dataC);
+        generateDataA(dataA);
+        generateDataB(dataB);
+        generateDataC(dataC);
 
-    radixSort(dataA.data(), n, &compareA, &datamoveA);
-    radixSort(dataB.data(), n, &compareB, &datamoveB);
-    radixSort(dataC.data(), n, &compareC, &datamoveC);
+        long long compareA = 0, datamoveA = 0;
+        long long compareB = 0, datamoveB = 0;
+        long long compareC = 0, datamoveC = 0;
 
-    cout << "SortedData_A: ";
-    print_array(dataA);
-    cout << "SortedData_B: ";
-    print_array(dataB);
-    cout << "SortedData_C: ";
-    print_array(dataC);
+        radixSort(dataA.data(), n, &compareA, &datamoveA);
+        radixSort(dataB.data(), n, &compareB, &datamoveB);
+        radixSort(dataC.data(), n, &compareC, &datamoveC);
 
-    cout << "Compare_Cnt_A: " << compareA << ", ";
-    cout << "DataMove_Cnt_A: " << datamoveA << endl;
-    cout << "Compare_Cnt_B: " << compareB << ", ";
-    cout << "DataMove_Cnt_B: " << datamoveB << endl;
-    cout << "Compare_Cnt_C: " << compareC << ", ";
-    cout << "DataMove_Cnt_C: " << datamoveC << endl;
+        outFile << n << " " << compareA << " " << datamoveA << " "
+                << compareB << " " << datamoveB << " "
+                << compareC << " " << datamoveC << endl;
+    }
 
+    outFile.close();
     return 0;
 }
 
@@ -153,6 +144,7 @@ void radixSort(itemType *a, int n, long long *compare, long long *datamove)
             }
         }
         int cnt = 0;
+
         for (int j = 0; j < 10; j++)
         {
             if (TABLE[j] != z)

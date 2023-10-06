@@ -33,26 +33,35 @@ int main()
 
     compare = 0;
     select_N(dataA, 0, n - 1, 0);
-    cout << "Minimum value_A: " << dataA[0] << endl;
-    cout << "Maximum value_A: " << dataA[n - 1] << endl;
-    cout << "Median value_A: " << dataA[n / 2 - 1] << endl;
-    cout << "Compare_A: " << compare << endl
+    cout << "Minimum value_A: " << dataA[0] << ", Compare: " << compare << endl;
+    compare = 0;
+    select_N(dataA, 0, n - 1, n);
+    cout << "Maximum value_A: " << dataA[n - 1] << ", Compare: " << compare << endl;
+    compare = 0;
+    select_N(dataA, 0, n - 1, n / 2);
+    cout << "Median value_A: " << dataA[n / 2 - 1] << ", Compare: " << compare << endl
          << endl;
 
     compare = 0;
     select_N(dataB, 0, n - 1, 0);
-    cout << "Minimum value_B: " << dataB[0] << endl;
-    cout << "Maximum value_B: " << dataB[n - 1] << endl;
-    cout << "Median value_B: " << dataB[n / 2 - 1] << endl;
-    cout << "Compare_B: " << compare << endl
+    cout << "Minimum value_B: " << dataB[0] << ", Compare: " << compare << endl;
+    compare = 0;
+    select_N(dataB, 0, n - 1, n);
+    cout << "Maximum value_B: " << dataB[n - 1] << ", Compare: " << compare << endl;
+    compare = 0;
+    select_N(dataB, 0, n - 1, n / 2);
+    cout << "Median value_B: " << dataB[n / 2 - 1] << ", Compare: " << compare << endl
          << endl;
 
     compare = 0;
     select_N(dataC, 0, n - 1, 0);
-    cout << "Minimum value_C: " << dataC[0] << endl;
-    cout << "Maximum value_C: " << dataC[n - 1] << endl;
-    cout << "Median value_C: " << dataC[n / 2 - 1] << endl;
-    cout << "Compare_C: " << compare << endl
+    cout << "Minimum value_C: " << dataC[0] << ", Compare: " << compare << endl;
+    compare = 0;
+    select_N(dataC, 0, n - 1, n);
+    cout << "Maximum value_C: " << dataC[n - 1] << ", Compare: " << compare << endl;
+    compare = 0;
+    select_N(dataC, 0, n - 1, n / 2);
+    cout << "Median value_C: " << dataC[n / 2 - 1] << ", Compare: " << compare << endl
          << endl;
 
     return 0;
