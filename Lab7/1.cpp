@@ -101,14 +101,20 @@ void rksearch(char *p, char *a)
     int d = 256;
     int q = 101;
     int count = 0;
+    int hornerMul = 0; // Horner 방법 곱셈 횟수
+    int normalMul = 0; // 일반 곱셈 횟수
 
     for (i = 0; i < M - 1; i++)
+    {
         h = (h * d) % q;
+        normalMul++; // h 계산 시 매번 곱셈이 발생
+    }
 
     for (i = 0; i < M; i++)
     {
         pHash = (d * pHash + p[i]) % q;
         aHash = (d * aHash + a[i]) % q;
+        hornerMul += 2; // Horner 방법을 사용한 pHash와 aHash의 초기화
     }
 
     for (i = 0; i <= N - M; i++)
@@ -122,16 +128,18 @@ void rksearch(char *p, char *a)
                     break;
             }
             if (j == M)
-                printf("%d, ", i);
+                printf("%d, ", i); // 패턴 발견 시 출력
         }
         if (i < N - M)
         {
             aHash = (d * (aHash - a[i] * h) + a[i + M]) % q;
+            hornerMul++; // Horner 방법을 사용한 곱셈
+            normalMul++; // a[i] * h 계산 시 곱셈 발생
             if (aHash < 0)
                 aHash = (aHash + q);
         }
     }
-    printf("%d ", count);
+    printf("%d (Rabin - Karp - 문자열의 시작의 IDX1, 문자열의 시작의 IDX2, 문자열 비교 횟수)\n%d, %d (Rabin - Karp * 수행 횟수, Horner vs not)\n", count, hornerMul, normalMul);
 }
 
 int main()
@@ -154,7 +162,6 @@ int main()
     printf("(KMP - 문자열의 시작의 IDX1, 문자열의 시작의 IDX2, 문자열 비교 횟수)\n");
 
     rksearch(pattern, text);
-    printf("(Rabin-Karp - 문자열의 시작의 IDX1, 문자열의 시작의 IDX2, 문자열 비교 횟수)\n");
 
     return 0;
 }
