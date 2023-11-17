@@ -36,7 +36,6 @@ string lcs(const string &X, const string &Y)
     vector<vector<int>> solution(m + 1, vector<int>(n + 1, 0)); // 방향을 나타내는 배열
 
     // (ii) 하향식 방법(with memoization)을 사용하여 LCS의 길이를 찾기
-    // memoization은 solution 배열에서 발생
     for (int i = 1; i <= m; ++i)
     {
         for (int j = 1; j <= n; ++j)
