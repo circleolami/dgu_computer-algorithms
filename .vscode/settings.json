@@ -55,6 +55,25 @@
     "xtr1common": "cpp",
     "xutility": "cpp",
     "vector": "cpp",
-    "algorithm": "cpp"
+    "algorithm": "cpp",
+    "array": "cpp",
+    "chrono": "cpp",
+    "deque": "cpp",
+    "forward_list": "cpp",
+    "fstream": "cpp",
+    "iomanip": "cpp",
+    "list": "cpp",
+    "map": "cpp",
+    "numeric": "cpp",
+    "optional": "cpp",
+    "queue": "cpp",
+    "random": "cpp",
+    "ranges": "cpp",
+    "set": "cpp",
+    "span": "cpp",
+    "stack": "cpp",
+    "unordered_set": "cpp",
+    "xhash": "cpp",
+    "xtree": "cpp"
   }
 }
