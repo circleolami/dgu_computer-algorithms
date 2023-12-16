@@ -1,0 +1,145 @@
+//Improved Brute Force
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+typedef struct food {
+    string name;
+    ll price, cal, carb, prot, fat;
+}food;
+ll N, curMinCost, curMinSelecting, neededCal,
+neededCarb, neededProt, neededFat;
+vector<food> foods = {
+    {"자이언트머스타드치킨", 9900, 1559, 140, 72, 79},
+    {"맛있구마샌드", 3400, 363, 56, 10, 11},
+    {"바삭오렌지치킨", 6900, 949, 103, 33, 45},
+    {"그릴드치킨버거", 3800, 447, 39, 21, 23},
+    {"과카몰리부리또볼", 5900, 264, 33, 6, 12},
+    {"김치카츠나베우동", 5000, 533, 75, 20, 17},
+    {"바삭새우온소바", 5000, 465, 65, 13, 17},
+    {"로스트닭가슴살덮밥", 4700, 414, 64, 32, 3},
+    {"소금구이너비아니김밥", 3000, 457, 55, 12, 21},
+    {"소금구이너비아니밥바", 2300, 465, 43, 18, 25},
+    {"2XL간장바싹불고기", 1600, 275, 45, 8, 7},
+    {"뉴비빔한줄", 3000, 372, 66, 9, 8},
+    {"3XL고추참치삼각", 1700, 303, 51, 9, 7},
+    {"채식버섯잡채밥", 4300, 555, 115, 8, 7},
+    {"꿀호떡버거", 3400, 446, 68, 12, 14},
+    {"크라비아스틱", 2000, 65, 6, 6, 1},
+    {"프로틴액티브초코", 3200, 135, 7, 20, 3},
+    {"먹태리아나쵸칩", 1500, 300, 39, 4, 14},
+    {"틈새라면고기짬뽕컵", 1900, 450, 69, 10, 15},
+    {"HEYROO닭가슴살득템", 1900, 114, 1, 23, 2},
+    {"햇반", 2100, 315, 70, 5, 2},
+    {"놀라운파스타샐러드", 2300, 161, 24, 5, 5},
+    {"놀라운계란샐러드", 2500, 167, 66, 8, 5},
+    {"놀라운치즈견과샐러드", 2500, 140, 12, 5, 8},
+    {"고대초코&블루베리크림파이", 3200, 787, 74, 8, 51},
+    {"백종원제대로제육한판", 4500, 812, 99, 41, 28},
+    {"꼬꼬봉크림치즈", 1600, 55, 5, 3, 3},
+    {"호만두명란교자", 4400, 530, 27, 15, 40},
+    {"레드스푼고기짬뽕", 700, 300, 19, 24, 14},
+    {"스팸닭가슴살", 6200, 340, 2, 17, 11}
+};
+bool cmp(food f1, food f2)
+{
+    return f1.price < f2.price;
+}
+pair<bool, int> calculatingCost(ll curSelected)
+{
+    bool isSatisfied = false;
+    int curCost = 0, tmpCal = 0, tmpCarb = 0, tmpProt = 0, tmpFat = 0;
+    for (int i = 0; i < N; i++) {
+        if (curSelected & (1 << i)) {
+            tmpCal += foods[i].cal;
+            tmpCarb += foods[i].carb;
+            tmpProt += foods[i].prot;
+            tmpFat += foods[i].fat;
+            curCost += foods[i].price;
+        }
+    }
+    if (tmpCal >= neededCal && tmpCarb >= neededCarb
+        && tmpProt >= neededProt && tmpFat >= neededFat)
+        isSatisfied = true; //영양소 조건 만족 여부 확인
+    return { isSatisfied, curCost };
+}
+void inPut()
+{
+    cout << "DFS & 비트마스킹\n\n";
+    cout << "섭취하고자하는 영양소를 입력하시오 (최소 1)\n";
+    cout << "열량(kcal) : ";
+    cin >> neededCal;
+    cout << "탄수화물(g) : ";
+    cin >> neededCarb;
+    cout << "단백질(g) : ";
+    cin >> neededProt;
+    cout << "지방(g) : ";
+    cin >> neededFat;
+}
+void DFS(int curIdx, ll curSelected)
+{
+    //curIdx : 이번에 선택할지 말지 고르는 식품 인덱스
+    //curSelected : 비트마스킹을 통해 1개의 정수로 
+    //선택한 식품들의 인덱스 저장
+    //int 범위를 넘기에 long long으로 선언
+    if (curIdx >= N) return;
+    pair<bool, int> curResult;
+
+    //현재 인덱스의 식품 구매하는 경우-----------------
+    curSelected |= (1 << curIdx);
+    curResult = calculatingCost(curSelected);
+    if (curResult.first) //needed 전부 만족한 경우
+        if (curResult.second < curMinCost) {
+            //최소 비용 갱신되는 경우
+            curMinCost = curResult.second;
+            curMinSelecting = curSelected;
+        }
+    if (curResult.second <= curMinCost)
+        DFS(curIdx + 1, curSelected);
+    //현재 조합이 이전에 나온 최소 비용보다 비용이 크다면,
+    //현재 조합은 이미 잘못된 조합이므로 더 이상 탐색할 이유 없음
+
+    //현재 인덱스의 식품 구매하지 않는 경우------------
+    curSelected &= ~(1 << curIdx);
+    curResult = calculatingCost(curSelected);
+    if (curResult.first)
+        if (curResult.second < curMinCost) {
+            curMinCost = curResult.second;
+            curMinSelecting = curSelected;
+        }
+    if (curResult.second <= curMinCost)
+        DFS(curIdx + 1, curSelected);
+}
+void outPut()
+{
+    cout << "최소 비용 : " << curMinCost << "\n";
+    cout << "구매하는 식품 조합 : \n";
+    int cnt = 1;
+    for (int i = 0; i < N; i++) {
+        if (curMinSelecting & (1 << i)) {
+            cout << cnt << " " << foods[i].name << "\n";
+            cnt++;
+        }
+    }
+}
+void solve()
+{
+    N = (int)foods.size();
+    //sort(foods.begin(), foods.end(), cmp);
+    curMinCost = LLONG_MAX;
+    curMinSelecting = 0;
+    inPut();
+    DFS(0, 0);
+    outPut();
+}
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    clock_t st, ed;
+    st = clock();
+    solve();
+    ed = clock();
+    long double rest = (long double)(ed - st);
+    cout << "\n\n 수행 시간(ms) : " << rest;
+    return 0;
+}
